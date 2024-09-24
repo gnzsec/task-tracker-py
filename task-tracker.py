@@ -72,32 +72,40 @@ def delete_task(task_id):
 
 # Main function to handle command line arguments
 def main():
-    if len(sys.argv) < 2:
-        print("Please provide a command.")
-        return
+    while True:  # Bucle para esperar comandos continuamente
+        command = input("Enter command (add, list, update, mark-done, mark-in-progress, delete, exit): ")
 
-    command = sys.argv[1]
+        if command == 'exit':
+            break  # Salir del bucle si el usuario ingresa 'exit'
 
-    if command == 'add':
-        add_task(' '.join(sys.argv[2:]))
-    elif command == 'list':
-        status = sys.argv[2] if len(sys.argv) > 2 else None
-        list_tasks(status)
-    elif command == 'update':
-        task_id = int(sys.argv[2])
-        new_description = ' '.join(sys.argv[3:])
-        update_task(task_id, new_description)
-    elif command == 'mark-done':
-        task_id = int(sys.argv[2])
-        mark_task(task_id, 'done')
-    elif command == 'mark-in-progress':
-        task_id = int(sys.argv[2])
-        mark_task(task_id, 'in-progress')
-    elif command == 'delete':
-        task_id = int(sys.argv[2])
-        delete_task(task_id)
-    else:
-        print("Unknown command.")
+        args = command.split()  # Dividir el comando en argumentos
+        if not args:
+            print("Please provide a command.")
+            continue
+
+        cmd = args[0]
+
+        if cmd == 'add':
+            description = ' '.join(args[1:])
+            add_task(description)
+        elif cmd == 'list':
+            status = args[1] if len(args) > 1 else None
+            list_tasks(status)
+        elif cmd == 'update':
+            task_id = int(args[1])
+            new_description = ' '.join(args[2:])
+            update_task(task_id, new_description)
+        elif cmd == 'mark-done':
+            task_id = int(args[1])
+            mark_task(task_id, 'done')
+        elif cmd == 'mark-in-progress':
+            task_id = int(args[1])
+            mark_task(task_id, 'in-progress')
+        elif cmd == 'delete':
+            task_id = int(args[1])
+            delete_task(task_id)
+        else:
+            print("Unknown command.")
 
 if __name__ == '__main__':
     main()
